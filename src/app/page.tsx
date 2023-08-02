@@ -1,7 +1,9 @@
-export default function Home() {
+import Home from "@/components/Home";
+
+export default function page() {
   return (
     <main>
-      <h1 className='text-5xl'>Hello Quizo</h1>
+      <Home />
     </main>
   )
 }
