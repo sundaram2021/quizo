@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 }
 
 import Script from 'next/script'
+import Navbar from '@/components/Navbar';
 
 export default function RootLayout({
   children,
@@ -25,8 +26,9 @@ export default function RootLayout({
         <ThemeProvider>
           <TanstackProvider>
             <body className={inter.className}>
-            <NextTopLoader showSpinner={false} />
-              <ThemeToggle className="absolute top-2 right-6 z-50" />
+              <NextTopLoader showSpinner={false} />
+              <ThemeToggle className="absolute top-4 right-6 z-50" />
+              <Navbar />
               <div className='min-h-screen'>
                 {children}
                 <Toaster />
