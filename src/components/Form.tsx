@@ -1,8 +1,7 @@
 "use client"
-
-import { Inter } from "next/font/google";
 import { Button } from "@/components/ui/button";
-import { FcGoogle } from "react-icons/fc";
+// import { db } from "@/lib/db/index";
+// import { users } from "@/lib/db/schema";
 import {
   Form,
   FormControl,
@@ -20,7 +19,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
+import { PiSpinnerLight } from "react-icons/pi";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { registerSchema } from "@/validators/auth";
@@ -36,25 +35,47 @@ type Input = z.infer<typeof registerSchema>;
 export default function Home() {
   const { toast } = useToast();
   const [formStep, setFormStep] = React.useState(0);
+  const[loading, setLoading] = React.useState(false);
   const form = useForm<Input>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      confirmPassword: "",
       email: "",
       name: "",
       password: "",
     },
   });
 
-  function onSubmit(data: Input) {
-    if (data.confirmPassword !== data.password) {
+  async function onSubmit(data: Input) {
+    try {
+      setLoading(true);   
+      const res = await fetch("api/user", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        }
+      })
+
+      console.log(res);
+
+      if(!res.ok){
+        throw new Error("Something went wrong");
+      }
+      
+
       toast({
-        title: "Passwords do not match",
+        title: "Successfully Logged In",
+        variant: "default",
+      })
+      window.location.href = "/";
+    } catch (error) {
+      toast({
+        title: "Error" + error,
         variant: "destructive",
-      });
-      return;
+      })
+    }finally{
+      setLoading(false);
     }
-    alert(JSON.stringify(data, null, 4));
     console.log(data);
   }
 
@@ -75,8 +96,6 @@ export default function Home() {
                 className={cn("space-y-3", {
                   // hidden: formStep == 1,
                 })}
-                // formStep == 0 -> translateX == 0
-                // formStep == 1 -> translateX == '-100%'
                 animate={{
                   translateX: `-${formStep * 100}%`,
                 }}
@@ -158,7 +177,7 @@ export default function Home() {
                     hidden: formStep == 0,
                   })}
                 >
-                  Submit
+                  {loading ? <div className="animate-spin duration-75 text-2xl "><PiSpinnerLight  /></div> : "Submit"}
                 </Button>
                 <Button
                   type="button"
