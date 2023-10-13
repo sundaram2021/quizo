@@ -3,7 +3,6 @@ import type { Metadata } from 'next'
 import ThemeProvider from '@/Providers/ThemeProvider';
 import { Inter } from 'next/font/google'
 import { Toaster } from "@/components/ui/toaster"
-import { ThemeToggle } from '@/components/ThemeToggle'
 import TanstackProvider from '@/Providers/TanstackProvider';
 import NextTopLoader from 'nextjs-toploader'
 const inter = Inter({ subsets: ['latin'] })
@@ -15,6 +14,9 @@ export const metadata: Metadata = {
 
 import Script from 'next/script'
 import Navbar from '@/components/Navbar';
+import ClerkProvider from '@/Providers/ClerkProvider';
+import SideCompo from '@/components/SideCompo';
+import Theme from '@/components/Theme';
 
 export default function RootLayout({
   children,
@@ -22,14 +24,16 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-      <html lang="en">
+    <html lang="en">
+      <ClerkProvider>
         <ThemeProvider>
           <TanstackProvider>
             <body className={inter.className}>
               <NextTopLoader showSpinner={false} />
-              <ThemeToggle className="absolute top-4 right-6 z-50" />
               <Navbar />
-              <div className='min-h-screen'>
+              <div className='relative min-h-screen'>
+                <Theme />
+                <SideCompo />
                 {children}
                 <Toaster />
               </div>
@@ -39,10 +43,11 @@ export default function RootLayout({
                 async
                 strategy='afterInteractive'
                 src='https://www.googletagmanager.com/gtag/js?id=G-BKK7659J87'
-            />
+                />
             <Script strategy='afterInteractive' src='/analytics.js' />
           </TanstackProvider>  
         </ThemeProvider>
-      </html>
+      </ClerkProvider>
+    </html>
   )
 }
