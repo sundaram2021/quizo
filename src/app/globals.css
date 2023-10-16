@@ -138,7 +138,7 @@
 }
 
 .quiz-select {
-  @apply text-black cursor-pointer rounded;
+  @apply text-black rounded;
 }
 
 .progress-bar {
