@@ -13,10 +13,9 @@ export const metadata: Metadata = {
 }
 
 import Script from 'next/script'
-import Navbar from '@/components/Navbar';
 import ClerkProvider from '@/Providers/ClerkProvider';
-import SideCompo from '@/components/SideCompo';
-import Theme from '@/components/Theme';
+// import SideCompo from '@/components/SideCompo';
+// import Theme from '@/components/Theme';
 
 export default function RootLayout({
   children,
@@ -30,10 +29,9 @@ export default function RootLayout({
           <TanstackProvider>
             <body className={inter.className}>
               <NextTopLoader showSpinner={false} />
-              <Navbar />
               <div className='relative min-h-screen'>
-                <Theme />
-                <SideCompo />
+                {/* <Theme /> */}
+                {/* <SideCompo /> */}
                 {children}
                 <Toaster />
               </div>
